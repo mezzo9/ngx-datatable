@@ -5,17 +5,16 @@ import { DatatableGroupHeaderTemplateDirective } from './body-group-header-templ
 export class DatatableGroupHeaderDirective {
 
   /**
-   * The detail row height is required especially 
-   * when virtual scroll is enabled.
+   * Row height is required when virtual scroll is enabled.
    */
   @Input() rowHeight: (number | ((group?: any, index?: number) => number)) = 0;
 
   @Input()
-  @ContentChild(DatatableGroupHeaderTemplateDirective, { read: TemplateRef }) 
+  @ContentChild(DatatableGroupHeaderTemplateDirective, { read: TemplateRef })
   template: TemplateRef<any>;
 
   /**
-   * Group visbility was toggled.
+   * Track toggling of group visibility
    */
   @Output() toggle: EventEmitter<any> = new EventEmitter();
 
@@ -23,7 +22,6 @@ export class DatatableGroupHeaderDirective {
    * Toggle the expansion of a group
    */
   toggleExpandGroup(group: any): void {
-    console.log('Inside body-group-header.directive.ts group', group);
     this.toggle.emit({
       type: 'group',
       value: group
@@ -31,7 +29,7 @@ export class DatatableGroupHeaderDirective {
   }
 
   /**
-   * API method to expand all groups.
+   * Expand all groups
    */
   expandAllGroups(): void {
     this.toggle.emit({
@@ -41,7 +39,7 @@ export class DatatableGroupHeaderDirective {
   }
 
   /**
-   * API method to collapse all groups.
+   * Collapse all groups
    */
   collapseAllGroups(): void {
     this.toggle.emit({

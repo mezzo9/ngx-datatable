@@ -8,7 +8,7 @@ export declare class DataTableBodyComponent implements OnInit, OnDestroy {
     scrollbarH: boolean;
     loadingIndicator: boolean;
     externalPaging: boolean;
-    rowHeight: number;
+    rowHeight: number | ((row?: any) => number);
     offsetX: number;
     emptyMessage: string;
     selectionType: SelectionType;
@@ -17,12 +17,17 @@ export declare class DataTableBodyComponent implements OnInit, OnDestroy {
     rowDetail: any;
     groupHeader: any;
     selectCheck: any;
+    displayCheck: any;
     trackByProp: string;
     rowClass: any;
     groupedRows: any;
     groupExpansionDefault: boolean;
     innerWidth: number;
     groupRowsBy: string;
+    virtualization: boolean;
+    summaryRow: boolean;
+    summaryPosition: string;
+    summaryHeight: number;
     pageSize: number;
     rows: any[];
     columns: any[];
@@ -39,6 +44,7 @@ export declare class DataTableBodyComponent implements OnInit, OnDestroy {
         event: MouseEvent;
         row: any;
     }>;
+    treeAction: EventEmitter<any>;
     scroller: ScrollerComponent;
     /**
      * Returns if selection is enabled.
@@ -46,10 +52,10 @@ export declare class DataTableBodyComponent implements OnInit, OnDestroy {
     readonly selectEnabled: boolean;
     /**
      * Property that would calculate the height of scroll bar
-     * based on the row heights cache for virtual scroll. Other scenarios
+     * based on the row heights cache for virtual scroll and virtualization. Other scenarios
      * calculate scroll height automatically (as height will be undefined).
      */
-    readonly scrollHeight: number;
+    readonly scrollHeight: number | undefined;
     rowHeightsCache: RowHeightCache;
     temp: any[];
     offsetY: number;
@@ -133,6 +139,16 @@ export declare class DataTableBodyComponent implements OnInit, OnDestroy {
      */
     getRowsStyles(rows: any): any;
     /**
+     * Calculate bottom summary row offset for scrollbar mode.
+     * For more information about cache and offset calculation
+     * see description for `getRowsStyles` method
+     *
+     * @returns {*} Returns the CSS3 style to be applied
+     *
+     * @memberOf DataTableBodyComponent
+     */
+    getBottomSummaryRowStyles(): any;
+    /**
      * Hides the loading indicator
      */
     hideIndicator(): void;
@@ -182,4 +198,5 @@ export declare class DataTableBodyComponent implements OnInit, OnDestroy {
      * Gets the row index given a row
      */
     getRowIndex(row: any): number;
+    onTreeAction(row: any): void;
 }

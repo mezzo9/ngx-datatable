@@ -10,6 +10,11 @@ import { getterForProp } from './column-prop-getters';
 export function setColumnDefaults(columns: TableColumn[]) {
   if(!columns) return;
 
+  // Only one column should hold the tree view
+  // Thus if multiple columns are provided with
+  // isTreeColumn as true we take only the first one
+  let treeColumnFound: boolean = false;
+
   for(const column of columns) {
     if(!column.$$id) {
       column.$$id = id();
@@ -17,7 +22,7 @@ export function setColumnDefaults(columns: TableColumn[]) {
 
     // prop can be numeric; zero is valid not a missing prop
     // translate name => prop
-    if(column.prop == null && column.name) {
+    if(isNullOrUndefined(column.prop) && column.name) {
       column.prop = camelCase(column.name);
     }
 
@@ -26,8 +31,12 @@ export function setColumnDefaults(columns: TableColumn[]) {
     }
 
     // format props if no name passed
-    if(column.prop != null && !column.name) {
+    if(!isNullOrUndefined(column.prop) && isNullOrUndefined(column.name)) {
       column.name = deCamelCase(String(column.prop));
+    }
+
+    if(isNullOrUndefined(column.prop) && isNullOrUndefined(column.name)) {
+      column.name = ''; // Fixes IE and Edge displaying `null`
     }
 
     if(!column.hasOwnProperty('resizeable')) {
@@ -49,7 +58,25 @@ export function setColumnDefaults(columns: TableColumn[]) {
     if(!column.hasOwnProperty('width')) {
       column.width = 150;
     }
+
+    if(!column.hasOwnProperty('isTreeColumn')) {
+      column.isTreeColumn = false;
+    } else {
+      if (column.isTreeColumn && !treeColumnFound) {
+        // If the first column with isTreeColumn is true found
+        // we mark that treeCoulmn is found
+        treeColumnFound = true;
+      } else {
+        // After that isTreeColumn property for any other column
+        // will be set as false
+        column.isTreeColumn = false;
+      }
+    }
   }
+}
+
+export function isNullOrUndefined<T>(value: T | null | undefined): value is null | undefined {
+    return value === null || value === undefined;
 }
 
 /**
@@ -72,6 +99,14 @@ export function translateTemplates(templates: DataTableColumnDirective[]): any[]
 
     if(temp.cellTemplate) {
       col.cellTemplate = temp.cellTemplate;
+    }
+
+    if(temp.summaryFunc) {
+      col.summaryFunc = temp.summaryFunc;
+    }
+
+    if(temp.summaryTemplate) {
+      col.summaryTemplate = temp.summaryTemplate;
     }
 
     result.push(col);

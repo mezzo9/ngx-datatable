@@ -5,7 +5,8 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
   selector: 'app',
   styleUrls: [
     '../src/themes/material.scss',
-    '../src/themes/dark.scss'
+    '../src/themes/dark.scss',
+    '../src/themes/bootstrap.scss'
   ],
   encapsulation: ViewEncapsulation.None,
   providers: [
@@ -44,19 +45,32 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
               <li><a href="#rx" (click)="state='rx'">RxJS</a></li>
               <li><a href="#contextmenu" (click)="state='contextmenu'">Context Menu</a></li>
               <li><a href="#css" (click)="state='css'">CSS Classes</a></li>
-              <li><a href="#dark" (click)="state='dark'">Dark theme</a></li>
               <li><a href="#footer" (click)="state='footer'">Footer Template</a></li>
+            </ul>
+          </li>
+          <li>
+            <h4>Themes</h4>
+            <ul>
+              <li><a href="#dark" (click)="state='dark'">Dark theme</a></li>
+              <li><a href="#bootstrap" (click)="state='bootstrap'">Bootstrap theme</a></li>
+            </ul>
+          </li>
+          <li>
+            <h4>Tree</h4>
+            <ul>
+              <li><a href="#fullscreen-tree" (click)="state='fullscreen-tree'">Full screen Tree</a></li>
+              <li><a href="#client-tree" (click)="state='client-tree'">Client Side Tree</a></li>
             </ul>
           </li>
           <li>
             <h4>Rows</h4>
             <ul>
-              <li><a href="#row-grouping" (click)="state='row-grouping'">Row Grouping</a></li>            
+              <li><a href="#row-grouping" (click)="state='row-grouping'">Row Grouping</a></li>
               <li><a href="#" (click)="state=''">Fluid Row Height</a></li>
               <li><a href="#basic-fixed" (click)="state='basic-fixed'">Fixed Row Height</a></li>
               <li><a href="#dynamic" (click)="state='dynamic'">Dynamic Row Height</a></li>
-              <li><a href="#row-details'" (click)="state='row-details'">Row Detail</a></li>
-              <li><a href="#responsive'" (click)="state='responsive'">Responsive</a></li>
+              <li><a href="#row-details" (click)="state='row-details'">Row Detail</a></li>
+              <li><a href="#responsive" (click)="state='responsive'">Responsive</a></li>
             </ul>
           </li>
           <li>
@@ -64,6 +78,7 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
             <ul>
               <li><a href="#client-paging" (click)="state='client-paging'">Client-side</a></li>
               <li><a href="#server-paging" (click)="state='server-paging'">Server-side</a></li>
+              <li><a href="#paging-scrolling-novirtualization" (click)="state='paging-scrolling-novirtualization'">Scrolling no virtual</a></li>
               <li><a href="#server-scrolling" (click)="state='server-scrolling'">Scrolling server-side</a></li>
               <li><a href="#virtual-paging" (click)="state='virtual-paging'">Virtual server-side</a></li>
             </ul>
@@ -83,7 +98,7 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
               <li><a href="#cell-selection" (click)="state='cell-selection'">Cell</a></li>
               <li><a href="#single-selection" (click)="state='single-selection'">Single Row</a></li>
               <li><a href="#multi-selection" (click)="state='multi-selection'">Multi Row</a></li>
-              <li><a href="#multi-click-selection'" (click)="state='multi-click-selection'">Multi Click Row</a></li>
+              <li><a href="#multi-click-selection" (click)="state='multi-click-selection'">Multi Click Row</a></li>
               <li><a href="#multidisable-selection" (click)="state='multidisable-selection'">Disable Callback</a></li>
               <li><a href="#chkbox-selection" (click)="state='chkbox-selection'">Checkbox</a></li>
               <li><a href="#chkbox-selection-template" (click)="state='chkbox-selection-template'">Custom Checkbox</a></li>
@@ -104,6 +119,16 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
               <li><a href="#fixed" (click)="state='fixed'">Fixed</a></li>
               <li><a href="#force" (click)="state='force'">Force</a></li>
               <li><a href="#pinning" (click)="state='pinning'">Pinning</a></li>
+              <li><a href="#reorder" (click)="state='reorder'">Reorder</a></li>
+            </ul>
+          </li>
+          <li>
+            <h4>Summary Row</h4>
+            <ul>
+              <li><a href="#simple-summary" (click)="state='simple-summary'">Simple</a></li>
+              <li><a href="#custom-template-summary" (click)="state='custom-template-summary'">Custom Template</a></li>
+              <li><a href="#paging-summary" (click)="state='paging-summary'">Server-side paging</a></li>
+              <li><a href="#inline-html-summary" (click)="state='inline-html-summary'">Inline HTML</a></li>
             </ul>
           </li>
         </ul>
@@ -126,13 +151,21 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
         <contextmenu-demo *ngIf="state === 'contextmenu'"></contextmenu-demo>
         <row-css-demo *ngIf="state === 'css'"></row-css-demo>
         <dynamic-height-demo *ngIf="state === 'dynamic'"></dynamic-height-demo>
-        <basic-dark-theme-demo *ngIf="state === 'dark'"></basic-dark-theme-demo>
         <footer-demo *ngIf="state === 'footer'"></footer-demo>
-        
+
+        <!-- Themes -->
+        <basic-dark-theme-demo *ngIf="state === 'dark'"></basic-dark-theme-demo>
+        <basic-bootstrap-theme-demo  *ngIf="state === 'bootstrap'"></basic-bootstrap-theme-demo>
+
+        <!-- Tree -->
+        <full-screen-tree-demo *ngIf="state === 'fullscreen-tree'"></full-screen-tree-demo>
+        <client-side-tree-demo *ngIf="state === 'client-tree'"></client-side-tree-demo>
+
         <!-- Paging -->
         <row-grouping-demo *ngIf="state === 'row-grouping'"></row-grouping-demo>
         <client-paging-demo *ngIf="state === 'client-paging'"></client-paging-demo>
         <server-paging-demo *ngIf="state === 'server-paging'"></server-paging-demo>
+        <paging-scrolling-novirtualization-demo *ngIf="state === 'paging-scrolling-novirtualization'"></paging-scrolling-novirtualization-demo>
         <server-scrolling-demo *ngIf="state === 'server-scrolling'"></server-scrolling-demo>
         <virtual-paging-demo *ngIf="state === 'virtual-paging'"></virtual-paging-demo>
 
@@ -161,6 +194,15 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
         <column-standard-demo *ngIf="state === 'fixed'"></column-standard-demo>
         <column-force-demo *ngIf="state === 'force'"></column-force-demo>
         <column-pinning-demo *ngIf="state === 'pinning'"></column-pinning-demo>
+        <column-reorder-demo *ngIf="state === 'reorder'"></column-reorder-demo>
+
+        <!-- Summary row -->
+        <summary-row-simple-demo *ngIf="state === 'simple-summary'"></summary-row-simple-demo>
+        <summary-row-custom-template-demo *ngIf="state === 'custom-template-summary'">
+        </summary-row-custom-template-demo>
+        <summary-row-server-paging-demo *ngIf="state === 'paging-summary'">
+        </summary-row-server-paging-demo>
+        <summary-row-inline-html *ngIf="state === 'inline-html-summary'"></summary-row-inline-html>
       </content>
     </div>
   `

@@ -9,6 +9,10 @@ var column_prop_getters_1 = require("./column-prop-getters");
 function setColumnDefaults(columns) {
     if (!columns)
         return;
+    // Only one column should hold the tree view
+    // Thus if multiple columns are provided with
+    // isTreeColumn as true we take only the first one
+    var treeColumnFound = false;
     for (var _i = 0, columns_1 = columns; _i < columns_1.length; _i++) {
         var column = columns_1[_i];
         if (!column.$$id) {
@@ -16,15 +20,18 @@ function setColumnDefaults(columns) {
         }
         // prop can be numeric; zero is valid not a missing prop
         // translate name => prop
-        if (column.prop == null && column.name) {
+        if (isNullOrUndefined(column.prop) && column.name) {
             column.prop = camel_case_1.camelCase(column.name);
         }
         if (!column.$$valueGetter) {
             column.$$valueGetter = column_prop_getters_1.getterForProp(column.prop);
         }
         // format props if no name passed
-        if (column.prop != null && !column.name) {
+        if (!isNullOrUndefined(column.prop) && isNullOrUndefined(column.name)) {
             column.name = camel_case_1.deCamelCase(String(column.prop));
+        }
+        if (isNullOrUndefined(column.prop) && isNullOrUndefined(column.name)) {
+            column.name = ''; // Fixes IE and Edge displaying `null`
         }
         if (!column.hasOwnProperty('resizeable')) {
             column.resizeable = true;
@@ -41,9 +48,28 @@ function setColumnDefaults(columns) {
         if (!column.hasOwnProperty('width')) {
             column.width = 150;
         }
+        if (!column.hasOwnProperty('isTreeColumn')) {
+            column.isTreeColumn = false;
+        }
+        else {
+            if (column.isTreeColumn && !treeColumnFound) {
+                // If the first column with isTreeColumn is true found
+                // we mark that treeCoulmn is found
+                treeColumnFound = true;
+            }
+            else {
+                // After that isTreeColumn property for any other column
+                // will be set as false
+                column.isTreeColumn = false;
+            }
+        }
     }
 }
 exports.setColumnDefaults = setColumnDefaults;
+function isNullOrUndefined(value) {
+    return value === null || value === undefined;
+}
+exports.isNullOrUndefined = isNullOrUndefined;
 /**
  * Translates templates definitions to objects
  */
@@ -62,6 +88,12 @@ function translateTemplates(templates) {
         }
         if (temp.cellTemplate) {
             col.cellTemplate = temp.cellTemplate;
+        }
+        if (temp.summaryFunc) {
+            col.summaryFunc = temp.summaryFunc;
+        }
+        if (temp.summaryTemplate) {
+            col.summaryTemplate = temp.summaryTemplate;
         }
         result.push(col);
     }
